@@ -6,7 +6,7 @@
     //nameとpasswordをdbからとる。この場合ANDでかつとなる
     $sql =<<<EOF
 
-    SELECT * FROM q0012_event WHERE  DATE_FORMAT(event_date, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d') 
+    SELECT * FROM q0012_event WHERE DATE_FORMAT(event_date, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d') 
 
 EOF;
 
