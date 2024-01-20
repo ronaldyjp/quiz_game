@@ -17,7 +17,7 @@ EOF;
     if(!$row){ //データベースに同じものがある場合
         echo json_encode(['result'=>['status' => 'fail', 'message' => '今天沒有活動']]);
         return;  
-    }
+    }  
     $sql =<<<EOF
 
     SELECT g.*, r.start_time, r.end_time FROM q0011_game g INNER JOIN q0013_event_game_rel r ON g.id = r.q0011_id WHERE r.q0012_id = :id 

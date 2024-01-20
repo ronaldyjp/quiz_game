@@ -10,6 +10,7 @@ EOF;
     //$stmt = $dbh -> prepare($sql);
     $stmt = $dbh->prepare($sql);
     $result = $stmt->execute([$_GET['user_id'], $_GET['event_id'], $_GET['question_id'],$_GET['answer']]); 
+    //executeで$_GETを使って、取得して、$sqlの「?」に代入する（左から）
     if($result == 0){ //データベースに同じものがある場合
         echo json_encode(['result'=>['status' => 'fail', 'message' => '回答失敗']]);
     }else{
