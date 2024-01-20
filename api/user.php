@@ -27,6 +27,17 @@ EOF;
         echo json_encode(['result'=>['status' => 'fail', 'message' => '沒有用戶資料']]);
         return;  
     }
+    $sql =<<<EOF
+
+    SELECT g.*, r.start_time, r.end_time FROM q0011_game g INNER JOIN q0013_event_game_rel r ON g.id = r.q0011_id WHERE r.q0012_id = :id 
+
+EOF;
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute([":id" => $row['event_id']]); 
+    $games = $stmt->fetchAll(PDO::FETCH_ASSOC);//PDO::FETCH_ASSOCは、結果セットに 返された際のカラム名で添字を付けた配列を返します。
+
+    $row['games'] = $games;
+
     $response = [
         'result'=>
             [
