@@ -1,62 +1,89 @@
 <?php
     include './common.php';
 ?>
-  <div id="app">
-    <v-app>
-      <v-main>
-       
+  <div id="app" >
+    <!-- <v-app style="font-family: 'YourFont', sans-serif; background-color: #b0e0e6 ;"> -->
+    <v-app :style="appStyles"  >
+    <v-main>
+          <!-- <div>{{currentQuestionNumber}}</div> -->
         <!-- <v-btn @click="startInterval()"> count</v-btn> -->
-      
+        <div v-if="!showGameBtn" class="mt-3 ml-8 mb-3"> ゲーム選択のボタン </div>
           <!-- ゲーム選択のボタン getQuestionPhpを呼び出し-->
         <li v-for="item in infoGame">
             <v-btn v-if="!showGameBtn"
-             color="blue"
+            color="orange-lighten-2"
+            variant="text"
+            class="mt-3 ml-8 mb-3"
              value="item.game_id"
              v-on:click="getQuestionPhp(item.game_id); showStart = !showStart; showGameBtn = !showGameBtn">
-             {{item.game_name}} {{item.game_id}}
+             {{item.game_name}}
             </v-btn>
         </li>
             <!--  ボタンをクリックしたら表示されるようにした -->
         <div>
-        <v-btn 
-          color="blue"
-          v-if="showStart" 
-          @click="showCard =!showCard;showStart = !showStart; startInterval()">
-          start 
-        </v-btn>
- 
+            <v-btn 
+              color="orange-lighten-2"
+              variant="text"
+              v-if="showStart" 
+              class="mt-3 ml-8 mb-3"
+              @click="showCard =!showCard;showStart = !showStart; startInterval()">
+              start 
+            </v-btn>
+    
         </div>
-          <v-container  v-if="showCard">
-              <v-card class="slidecard"> 
-              
-                <h4 class="col-md-8 offset-md-2">
+          <v-container  v-if="showCard && currentQuestionNumber <= questionsLength-1">
+                <v-card
+                    class="mx-auto"
+                    max-width="900"
+                    
+                >
+                <v-card-text class="pa-5">
+                  <!-- padding -->
+
+                <div class=" ml-8 mb-2 text-h3 text--primary  text-center">
+                    <div class=" text-right text-h3" style="color: #ff0000;"
+                    >{{Count.sec}} s
+                    </div>
                     第 {{infoQuiz[currentQuestionNumber].question_id}} 問 / 
                     第 {{questionsLength}} 問
-                </h4>
-                <div class="col-md-8 offset-md-2">
-                    <div>残り {{Count.sec}} 秒</div>
+                   
                 </div>
-                <div class="col-md-8 offset-md-2">
-                  <h3>{{infoQuiz[currentQuestionNumber].question_question}}</h3>
+               
+                <div>
+                <v-img
+                  height="250px"
+                      :src="'/quiz_game' + infoQuiz[currentQuestionNumber].question_image_ur"
+                  ></v-img>
                 </div>
-                <div class="col-md-8 offset-md-2">
+                <!-- v-bind または :　は中身を変数にすることができる。' 'の中身は文字化する -->
+                <div >
+                  <h3 class="mb-4  text-h4 text--primary  text-center">{{infoQuiz[currentQuestionNumber].question_question}}</h3>
+                </div>
+                <div class="ml-2 mb-4 text-h5 text--primary">
                   <div> 【次の4つから選べ】</div>
-                  <ol>
-                    <li>{{infoQuiz[currentQuestionNumber].question_choices1}}</li>
-                    <li>{{infoQuiz[currentQuestionNumber].question_choices2}}</li>
-                    <li>{{infoQuiz[currentQuestionNumber].question_choices3}}</li>
-                    <li>{{infoQuiz[currentQuestionNumber].question_choices4}}</li>
+                  <ol >
+                    <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices1}}</li>
+                    <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices2}}</li>
+                    <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices3}}</li>
+                    <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices4}}</li>
                   </ol>
                 </div>
+                <div class="text-center pa-3">
+                <v-btn style="color:#191970 ;" v-if="showCard" @click=" timeStop()"> stop </v-btn>
+                <v-btn style="color:#191970 ;" class="ml-5"  v-if="showCard" @click="startInterval()"> start </v-btn>
+                </div>
+              </v-card-text>
                 <!-- <v-btn  color="blue" @click="nextQuestion()"> Next </v-btn> -->
                 <!-- <v-card-text>テキスト</v-card-text> -->
                 <!-- <v-card-actions>リンクなど</v-card-actions> -->
+              
               </v-card>
+
             <!-- <v-btn v-on:click="getEventPhp()">ログイン</v-btn> -->
          </v-container>
          <!-- <v-btn @click="getShowQuestionPhp"> show_question </v-btn> -->
-         <v-btn  v-if="showCard" @click=" timeStop()"> stop </v-btn>
-         <v-btn  v-if="showCard" @click="startInterval()"> restart </v-btn>
+         <!-- <v-btn class=" text-center" v-if="showCard" @click=" timeStop()"> stop </v-btn>
+         <v-btn class="ml-8 mb-4"  v-if="showCard" @click="startInterval()"> restart </v-btn> -->
 
          
 
@@ -70,10 +97,16 @@
       el: '#app',
       vuetify: new Vuetify(),
      data: {
+        appStyles:{
+          backgroundColor: "#b0e0e6",
+          color: "#333"
+        },
+       
         message: 'Answer Screen',
         showGameBtn: false,
         showStart: false,
         showCard: false,
+
         infoEvent:{
           event_id: '',
           event_name: '',
@@ -85,8 +118,8 @@
         currentQuestionNumber: 0, // 現在の問題番号start from 0
         questionsLength: 0,
         Count:{
-          defaultSec: 10,
-          sec: 10,
+          defaultSec: 9,
+          sec: 9,
           timeFin: 0,
           intervalId: null,
         },
@@ -97,14 +130,14 @@
       },
       methods:{
      
-        nextQuestion(){
-          if(this.currentQuestionNumber < this.questionsLength-1){
-          this.currentQuestionNumber += 1
-          }
-        },     //ここから
+        // nextQuestion(){
+        //   if(this.currentQuestionNumber < this.questionsLength-1){
+        //   this.currentQuestionNumber += 1
+        //   }
+        // },     //ここから
         startInterval(){
           //alert('move');
-          if(this.currentQuestionNumber < this.questionsLength-1){
+          if(this.currentQuestionNumber <= this.questionsLength-1){
             this.Count.intervalId = setInterval(() =>{
               this.Count.sec --;
               if(this.Count.sec < this.Count.timeFin){
