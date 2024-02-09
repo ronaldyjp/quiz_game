@@ -50,6 +50,7 @@
                 </div>
                
                 <div>
+                  <!-- 入力を変数にしたい場合の方法 -->
                 <v-img
                   height="250px"
                       :src="'/quiz_game' + infoQuiz[currentQuestionNumber].question_image_ur"
