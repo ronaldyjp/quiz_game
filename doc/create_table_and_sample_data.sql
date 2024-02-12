@@ -230,7 +230,10 @@ INSERT INTO `q0021_question` (`id`, `q0011_id`, `image`, `question`, `choices1`,
 	(2, 1, NULL, 'q2_1', 'c2_1', 'c2_2', 'c2_3', 'c2_4', 2, 2),
 	(3, 1, 'q3.jpg', 'q3_1', '', '', '', '', 3, 3),
 	(4, 1, NULL, 'q4_1', 'c4_1', 'c4_2', 'c4_3', 'c4_4', 4, 4),
-	(5, 1, 'q5.jpg', 'q5_1', 'c5_1', 'c5_2', 'c5_3', 'c5_4', 1, 1);
+	(5, 2, NULL, 'q5_1', 'c5_1', 'c5_2', 'c5_3', 'c5_4', 1, 1),
+	(6, 2, NULL, 'q6_1', 'c6_1', 'c6_2', 'c6_3', 'c6_4', 1, 1),
+	(7, 2, NULL, 'q7_1', 'c7_1', 'c7_2', 'c7_3', 'c7_4', 1, 1)
+	;
 
 --  テーブル quiz_game.q0022_question_show_record の構造をダンプしています
 CREATE TABLE IF NOT EXISTS `q0022_question_show_record` (
