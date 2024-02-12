@@ -15,11 +15,21 @@
      on q.q0011_id = g.id
     
     
-    select from q0004_user_answer a
-    inner join jstudy_t0010_apply u
-     on u.id = a.q0001_id
-    
-     on a.q0012_id = e.id and a.q0021_id = q.id and a.answer = q.answer
+     SELECT 
+     a.id as user_id, 
+     t.team_id, t.team_name, t.team_school
+     from jstudy_t0010_apply a  
+     inner join
+      (select a.id as team_id , a.a_email as email, t.name as team_name, t.school as team_school, t.q0012_id as event_id
+         from jstudy_t0010_apply a
+         inner join q0002_team t
+         on t.leader_email = a.a_email
+         where a.id = a.ref_apply_id
+     ) t
+     on t.team_id = a.ref_apply_id
+     where t.event_id = 1
+
+     
 EOF;    
 
     $response = [
