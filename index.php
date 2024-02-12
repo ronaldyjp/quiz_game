@@ -6,7 +6,10 @@
       <v-main>
         <v-container>
             <v-card>
-            {{message}}
+            {{message}} 
+            <br>
+            <a href="./questionScreen.php">Question </a><br>
+            <a href="./answerScreen.php">AnswerScreen </a><br>
             </v-card>
         </v-container>
       </v-main>

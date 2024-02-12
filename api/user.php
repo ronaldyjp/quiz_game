@@ -4,18 +4,24 @@
 
     $sql =<<<EOF
 
-SELECT 
+    SELECT 
     e.id AS event_id, e.name as event_name,
-    t.id as team_id , t.name as team_name, t.school as team_school ,
-    u.id as user_id , u.name as user_name 
-FROM q0012_event e 
-INNER JOIN q0002_team t 
-     ON e.id = t.q0012_id
-INNER JOIN q0001_user u 
-   ON u.id = t.q0012_id
-WHERE  
-    DATE_FORMAT(event_date, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d')  AND 
-    u.email = :email
+    NVL(t.team_id,0) as team_id , NVL(t.team_name,'') as team_name, NVL(t.team_school,'') as team_school,
+    a.id as user_id , a.a_name as user_name 
+    from jstudy_t0010_apply a 
+        inner join q0012_event e 
+        on DATE_FORMAT(event_date, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d') 
+    left join
+     (select a.id as team_id , a.a_email as email, t.name as team_name, a.a_school as team_school, e.id as event_id
+        from jstudy_t0010_apply a
+        inner join q0002_team t
+        on t.leader_email = a.a_email
+        inner join q0012_event e
+        on e.id = t.q0012_id
+        where a.id = a.ref_apply_id
+    ) t
+    on e.id = t.event_id AND t.team_id = a.ref_apply_id
+    where a.a_email = :email
 
 EOF;
 
