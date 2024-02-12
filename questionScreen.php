@@ -4,7 +4,19 @@
   <div id="app" >
     <!-- <v-app style="font-family: 'YourFont', sans-serif; background-color: #b0e0e6 ;"> -->
     <v-app :style="appStyles"  >
-    <v-main>
+      <v-app-bar
+          color="blue"
+          dense
+          dark
+          app
+        >        
+        <v-toolbar-title style="color: #000000;">{{infoEvent.event_name}}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          
+
+      </v-app-bar>
+
+      <v-main>
           <!-- <div>{{currentQuestionNumber}}</div> -->
         <!-- <v-btn @click="startInterval()"> count</v-btn> -->
         <div v-if="!showGameBtn" class="mt-3 ml-8 mb-3"> ゲーム選択のボタン </div>
@@ -15,7 +27,7 @@
             variant="text"
             class="mt-3 ml-8 mb-3"
              value="item.game_id"
-             v-on:click="getQuestionPhp(item.game_id); showStart = !showStart; showGameBtn = !showGameBtn">
+             v-on:click="getQuestionPhp(item.game_id); displayGameName=item.game_name; showStart = !showStart; showGameBtn = !showGameBtn">
              {{item.game_name}}
             </v-btn>
         </li>
@@ -29,8 +41,11 @@
               @click="showCard =!showCard;showStart = !showStart; startInterval()">
               start 
             </v-btn>
-    
         </div>
+        <div v-if="showCard" class="ml-8 mb-2 text-h3 text--primary  text-center">
+          {{displayGameName}}
+        </div>
+
           <v-container  v-if="showCard && currentQuestionNumber <= questionsLength-1">
                 <v-card
                     class="mx-auto"
@@ -107,6 +122,7 @@
         showGameBtn: false,
         showStart: false,
         showCard: false,
+        displayGameName: "",
 
         infoEvent:{
           event_id: '',
@@ -162,6 +178,7 @@
           clearInterval(this.Count.intervalId);
         },
         getEventPhp: function(){
+          //alert('show ' + axios);
           axios.get('/quiz_game/api/event.php')
           .then(res =>{
            // var self = this

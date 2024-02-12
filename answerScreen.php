@@ -75,7 +75,7 @@
             <div> {{infoUser.event_id}} </div> -->
         </v-container>
         <!-- 終了後非表示にできない -->
-        <v-container if="currentQuestionNumber < questionsLength"> 
+        <v-container v-if="currentQuestionNumber < questionsLength"> 
           <v-card>
             <div>回答</div>
             <div>
@@ -93,10 +93,12 @@
             <div>選択：{{answerRadios}}</div>
             </v-card-text>
             <v-card-actions>
-              <v-btn class="info" value="send" v-on:click="getAnswerphp(answerRadios);questionNumber()">回答</v-btn>
+              <v-btn class="info" value="send" v-on:click="getAnswerphp(answerRadios);questionNumber();handleButtonClick()">回答</v-btn>
             </v-card-actions>
           </v-card>
         </v-container>
+        <v-container v-if="currentQuestionNumber > questionsLength">
+       </v-container>
 
       </v-main>
     </v-app>
@@ -143,6 +145,9 @@
       methods:{
         questionNumber: function(){
           this.currentQuestionNumber += 1
+        },
+        handleButtonClick: function(){
+          this.answerRadios ="";
         },
         getEventPhp: function(){
           axios.get('/quiz_game/api/event.php')
@@ -204,9 +209,6 @@
                 });
               }
             }
-            // console.log(this.infoGame)
-            // console.log(this.infoUser)
-
             console.log(res)
           })
           .catch(function (error) {
