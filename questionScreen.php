@@ -95,7 +95,7 @@
                       class="mx-auto"
                       max-width="900"
                       max-height="250px"
-                      :src="'/quiz_game' + infoQuiz[currentQuestionNumber].question_image_ur"
+                      :src="'./' + infoQuiz[currentQuestionNumber].question_image_ur"
                   ></v-img>
                 </div>
                 <!-- v-bind または :　は中身を変数にすることができる。' 'の中身は文字化する -->
