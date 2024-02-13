@@ -56,15 +56,18 @@
                   <!-- padding -->
 
                 <div class=" ml-8 mb-2 text-h3 text--primary  text-center">
-
                     完結
-                   
                 </div>
             </v-card-text>
             <v-card-actions class="justify-center">
               <v-btn
-                v-on:click="showCard=returnMain(); currentQuestionNumber=0; infoQuiz=[]">
+                v-on:click="showCard=returnMain(); currentQuestionNumber=0; infoQuiz=[];showResult=!showResult">
                 Return
+              </v-btn>
+              <v-btn
+              v-if="!showResult"
+                v-on:click="getReportPhp();showResult=!showResult">
+                結果
               </v-btn>
             </v-card-actions>
 
@@ -128,7 +131,30 @@
               </v-card>
 
             <!-- <v-btn v-on:click="getEventPhp()">ログイン</v-btn> -->
-         </v-container>
+        </v-container>
+       
+         <v-container v-if="showResult">
+          <v-card class="text-center">
+            <v-row>
+              <v-col>
+                <h1>team ranking </h1>
+                <div v-for="(item,index) in infoReportTeam">
+                    <h3>第{{index+1}}位 {{item.school}}({{item.name}})</h3>
+                    <div>ポイント: {{item.point}} point</div>
+                    <div>トータルタイム: {{item.total_min}}s</div>
+                </div>
+              </v-col>
+              <v-col>
+                <h1>personal ranking </h1>
+                <div v-for="(item,index) in infoReportPerson">
+                    <h3>第{{index+1}}位  {{item.name}}</h3>
+                    <div>ポイント: {{item.point}} point</div>
+                    <div>トータルタイム: {{item.total_min}}s</div>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-container>
          <!-- <v-btn @click="getShowQuestionPhp"> show_question </v-btn> -->
          <!-- <v-btn class=" text-center" v-if="showCard" @click=" timeStop()"> stop </v-btn>
          <v-btn class="ml-8 mb-4"  v-if="showCard" @click="startInterval()"> restart </v-btn> -->
@@ -156,6 +182,7 @@
         showCard: false,
         displayGameName: "",
         showAnswer: false,
+        showResult:false,
 
         infoEvent:{
           event_id: '',
@@ -165,6 +192,8 @@
         },
         infoGame:[],
         infoQuiz:[],
+        infoReportTeam:[],
+        infoReportPerson:[],
         currentQuestionNumber: 0, // 現在の問題番号start from 0
         questionsLength: 0,
         Count:{
@@ -334,6 +363,39 @@
             console.log(error);
           })
         },
+        getReportPhp:function(){
+          axios.get('./api/report.php')
+          .then(res =>{
+            var team = res.data.data.team
+            var person = res.data.data.person 
+            for(var key in team){
+              if(team[key].team_id && !this.infoReportTeam.includes(team[key].team_id)){
+                this.infoReportTeam.push({
+                  team_id: team[key].team_id,
+                  point: team[key].point,
+                  total_min: team[key].total_min,
+                  name: team[key].name,
+                  school: team[key].school,
+                })
+              }
+            }
+            for(var key in person){
+              if(person[key].name && !this.infoReportPerson.includes(person[key].name)){
+                this.infoReportPerson.push({
+                  point: person[key].point,
+                  total_min: person[key].total_min,
+                  name: person[key].name,
+             
+                })
+              }
+            }
+            
+            console.log(res)
+            console.log(this.infoReportTeam)
+            console.log(this.infoReportPerson)
+
+          })
+        }
 
       },
       created(){ 
