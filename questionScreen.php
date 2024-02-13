@@ -79,8 +79,8 @@
                 <v-card-text class="pa-5">
                   <!-- padding -->
 
-                <div class=" ml-8 mb-2 text-h3 text--primary  text-center">
-                    <div class=" text-right text-h3" style="color: #ff0000;"
+                <div class=" ml-8 mb-2 text-h5 text--primary  text-center">
+                    <div class=" text-right text-h5" style="color: #ff0000;" v-show=" Count.sec > 0"
                     >{{Count.sec}} 秒
                     </div>
                     第 {{currentQuestionNumber+1}} 題 / 
@@ -102,8 +102,8 @@
                 <div >
                   <h3 class="mb-4  text-h4 text--primary  text-center">{{infoQuiz[currentQuestionNumber].question_question}}</h3>
                 </div>
-                <div v-if="!showAnswer" class="ml-2 mb-4 text-h5 text--primary">
-                  <div> 【選擇】</div>
+                <div v-if="!showAnswer" class="ml-2 mb-4 text-h4 text--primary">
+                  <div> <font color="blue">【選擇】</font></div>
                   <ol >
                     <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices1}}</li>
                     <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices2}}</li>
@@ -111,9 +111,9 @@
                     <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices4}}</li>
                   </ol>
                 </div>
-                <div v-if="showAnswer" class="ml-2 mb-4 text-h5 text--primary">
-                <div> 【正解】</div>
-                <h1> {{infoQuiz[currentQuestionNumber].question_answer}} </h1>
+                <div v-if="showAnswer" class="ml-2 mb-4 text-h4 text--primary">
+                <div>  <font color="blue">【答案】</font></div>
+                <div> {{infoQuiz[currentQuestionNumber].question_answer}} : {{infoQuiz[currentQuestionNumber]['question_choices' + infoQuiz[currentQuestionNumber].question_answer]}} </div>
 
                 </div>
                 <div class="text-center pa-3">
@@ -168,10 +168,10 @@
         currentQuestionNumber: 0, // 現在の問題番号start from 0
         questionsLength: 0,
         Count:{
-          defaultSec: 9,
-          sec: 9,
+          defaultSec: <?=$CONFIG['show_second']?> ,
+          sec: <?=$CONFIG['show_second']?>,
           timeAnswer: 0,
-          timeFin: -5,
+          timeFin: -3,
           intervalId: null,
 
         },
@@ -194,14 +194,14 @@
               this.Count.sec --;
               if(this.Count.sec == this.Count.timeAnswer){
                 
-                this.showAnswer = !this.showAnswer;
+                this.showAnswer = true;
               }
               if(this.Count.sec < this.Count.timeFin){
                // this.AnswerInterval();
                
                 this.Count.sec = this.Count.defaultSec;
                 //this.nextQuestion();
-                this.showAnswer = !this.showAnswer;
+                this.showAnswer = false;
 
                 this.getShowQuestionPhp(this.currentQuestionNumber);//こっちが先
                 this.currentQuestionNumber += 1
@@ -276,7 +276,7 @@
           {
             params:{//クエリパラメータをつける方法
               game_id: id,
-              event_id: 1
+              event_id: this.infoEvent.event_id
             }
           }
           )

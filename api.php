@@ -16,7 +16,7 @@ $files = [
     "/api/user.php?email=user1_1@asjas.org",
     "/api/answer_sheet.php?game_id=1",
     "/api/answer.php?user_id=1&event_id=1&question_id=1&answer=1",
-    "/api/report.php?event_id=1",
+    "/api/report.php",
 ];
 
 foreach ($files as $value) {

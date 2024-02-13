@@ -1,9 +1,8 @@
 <?php
     include './com/common.php';
-    $event_id = $_GET['event_id'];
     $sql =<<<EOF
 
-    SELECT ROW_NUMBER() OVER (ORDER BY SUM(res.point) DESC, SUM(res.reply_min) ASC) AS rank ,res.team_id, SUM(res.point) AS point, SUM(res.reply_min) AS total_min, t.name, t.school FROM 
+    SELECT res.team_id, SUM(res.point) AS point, SUM(res.reply_min) AS total_min, t.name, t.school FROM 
  (
     SELECT t.team_id, r.id AS rec_id, MIN(a.created_at) AS ans_time,
     CASE
@@ -26,21 +25,24 @@
          where a.id = a.ref_apply_id
      ) t
      on t.ref_id = u.ref_apply_id
-     where a.q0012_id = :event_id and u.ref_apply_id >0 
+     inner join q0012_event e
+     ON e.active = 1 and a.q0012_id = e.id 
+     where u.ref_apply_id >0 
      GROUP BY t.team_id,r.id
 ) as res
      INNER JOIN q0002_team t 
      ON t.id = res.team_id
      GROUP BY res.team_id 
+     ORDER BY SUM(res.point) DESC, SUM(res.reply_min) ASC
      
 EOF; 
     $stmt = $dbh->prepare($sql);
-    $stmt->execute([":event_id" => $event_id]); 
+    $stmt->execute(); 
     $team = $stmt->fetchAll(PDO::FETCH_ASSOC);
     //PDO::FETCH_ASSOCは、結果セットに 返された際のカラム名で添字を付けた配列を返します。
     $sql =<<<EOF
 
-    SELECT ROW_NUMBER() OVER (ORDER BY SUM(res.point) DESC, SUM(res.reply_min) ASC) AS rank , SUM(res.point) AS point, SUM(res.reply_min) AS total_min, u.a_name AS name FROM 
+    SELECT SUM(res.point) AS point, SUM(res.reply_min) AS total_min, u.a_name AS name FROM 
     (
         SELECT u.id as user_id, r.id AS rec_id, MIN(a.created_at) AS ans_time,
         CASE
@@ -55,17 +57,20 @@ EOF;
             ON  u.id = a.q0001_id
         inner join q0022_question_show_record r
             ON r.q0021_id = a.q0021_id AND TIMESTAMPDIFF(SECOND, r.created_at, a.created_at) >= 0 AND TIMESTAMPDIFF(SECOND, r.created_at, a.created_at) < 30
-         where a.q0012_id = :event_id and u.ref_apply_id is null
+        inner join q0012_event e
+            ON e.active = 1 and a.q0012_id = e.id 
+         where u.ref_apply_id is null
          GROUP BY u.id,r.id
     ) as res
          INNER JOIN jstudy_t0010_apply u
          ON u.id = res.user_id
          GROUP BY res.user_id ,u.a_name
+         ORDER BY SUM(res.point) DESC, SUM(res.reply_min) ASC
          LIMIT 5
      
 EOF; 
     $stmt = $dbh->prepare($sql);
-    $stmt->execute([":event_id" => $event_id]); 
+    $stmt->execute(); 
     $person = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
