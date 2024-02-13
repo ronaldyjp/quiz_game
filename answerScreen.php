@@ -80,7 +80,7 @@
           {{displayGameName}}
         </div>
         <!-- 終了後非表示にできない -->
-        <v-container v-if="showCard && currentQuestionNumber < questionsLength"> 
+        <v-container v-if="showCard && currentQuestionNumber < questionsLength" class="text-center"> 
           <v-card>
             <div>回答</div>
             <div>

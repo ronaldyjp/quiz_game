@@ -102,7 +102,7 @@
                 <div >
                   <h3 class="mb-4  text-h4 text--primary  text-center">{{infoQuiz[currentQuestionNumber].question_question}}</h3>
                 </div>
-                <div class="ml-2 mb-4 text-h5 text--primary">
+                <div v-if="!showAnswer" class="ml-2 mb-4 text-h5 text--primary">
                   <div> 【選擇】</div>
                   <ol >
                     <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices1}}</li>
@@ -110,6 +110,11 @@
                     <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices3}}</li>
                     <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices4}}</li>
                   </ol>
+                </div>
+                <div v-if="showAnswer" class="ml-2 mb-4 text-h5 text--primary">
+                <div> 【正解】</div>
+                <h1> {{infoQuiz[currentQuestionNumber].question_answer}} </h1>
+
                 </div>
                 <div class="text-center pa-3">
                 <v-btn style="color:#191970 ;" v-if="showCard" @click=" timeStop()"> stop </v-btn>
@@ -150,6 +155,7 @@
         showStart: false,
         showCard: false,
         displayGameName: "",
+        showAnswer: false,
 
         infoEvent:{
           event_id: '',
@@ -162,10 +168,12 @@
         currentQuestionNumber: 0, // 現在の問題番号start from 0
         questionsLength: 0,
         Count:{
-          defaultSec: 3,
-          sec: 3,
-          timeFin: 0,
+          defaultSec: 9,
+          sec: 9,
+          timeAnswer: 0,
+          timeFin: -5,
           intervalId: null,
+
         },
       
       },
@@ -184,16 +192,21 @@
           if(this.currentQuestionNumber <= this.questionsLength-1){
             this.Count.intervalId = setInterval(() =>{
               this.Count.sec --;
+              if(this.Count.sec == this.Count.timeAnswer){
+                
+                this.showAnswer = !this.showAnswer;
+              }
               if(this.Count.sec < this.Count.timeFin){
-                // alert('koko')
-                //clearInterval(this.Count.intervalId);
-                //this.Count.intervalId=null;
-                //alert(this.Count.intervalId);
+               // this.AnswerInterval();
+               
                 this.Count.sec = this.Count.defaultSec;
                 //this.nextQuestion();
+                this.showAnswer = !this.showAnswer;
+
                 this.getShowQuestionPhp(this.currentQuestionNumber);//こっちが先
                 this.currentQuestionNumber += 1
-                
+
+                //this.showAnswer=false;
               }
             }, 1000);
           }
@@ -203,11 +216,20 @@
           //   //this.Count.intervalId=null;
           // }
         },
+        AnswerInterval(){
+          this.Count.intervalId2 = setInterval(()=>{
+                    this.Count.answerSec--;
+                    if(this.Count.answerSec < this.Count.timeFin){
+                      this.Count.answerSec = this.Count.defaultAnswerSec;
+                      this.showAnswer = true;
+                    }
+                  },1000);
+        },
         returnMain(){
           this.showGameBtn = false;
           this.showCard = false;
+          this.Count.sec= this.Count.defaultSec;
           this.timeStop();
-          
         },
         timeStop(){
           clearInterval(this.Count.intervalId);
