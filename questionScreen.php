@@ -63,7 +63,7 @@
             </v-card-text>
             <v-card-actions class="justify-center">
               <v-btn
-                v-on:click="showCard=returnMain()">
+                v-on:click="showCard=returnMain(); currentQuestionNumber=0; infoQuiz=[]">
                 Return
               </v-btn>
             </v-card-actions>
@@ -83,7 +83,7 @@
                     <div class=" text-right text-h3" style="color: #ff0000;"
                     >{{Count.sec}} 秒
                     </div>
-                    第 {{infoQuiz[currentQuestionNumber].question_id}} 題 / 
+                    第 {{currentQuestionNumber+1}} 題 / 
                     共 {{questionsLength}} 題
                    
                 </div>
@@ -162,8 +162,8 @@
         currentQuestionNumber: 0, // 現在の問題番号start from 0
         questionsLength: 0,
         Count:{
-          defaultSec: 5,
-          sec: 5,
+          defaultSec: 3,
+          sec: 3,
           timeFin: 0,
           intervalId: null,
         },
@@ -196,11 +196,12 @@
                 
               }
             }, 1000);
-          }else{
-            clearInterval(this.Count.intervalId);
-            alert("end of the game");
-            //this.Count.intervalId=null;
           }
+          // else{
+          //   clearInterval(this.Count.intervalId);
+          //   alert("end of the game");
+          //   //this.Count.intervalId=null;
+          // }
         },
         returnMain(){
           this.showGameBtn = false;
@@ -208,8 +209,7 @@
           this.timeStop();
           
         },
-        timeStop(){
-          clearInterval(this.Count.intervalId);
+         clearInterval(this.Count.intervalId);
         },
         getEventPhp: function(){
           //alert('show ' + axios);

@@ -40,7 +40,7 @@
 
 
       <v-main>
-        <v-container>
+        <v-container v-if="showEmail">
             <!-- <v-card v-if="!showCard"> -->
             <v-card>
               <v-card-text>
@@ -50,32 +50,32 @@
               </v-card-text>
 
                 <v-card-actions>
-                    <v-btn class="info" value="send" v-on:click="getUserPhp(); showCard=!showCard">送信</v-btn>
+                    <v-btn class="info" value="send" v-on:click="getUserPhp(); showEmail=!showEmail; showGameBtn=!showGameBtn">送信</v-btn>
                 </v-card-actions>
             </v-card>
             <!-- <div> {{email}} </div>
             <div> {{infoUser.event_id}} </div> -->
         </v-container>
-        <v-container >
+        <v-container  v-if="showGameBtn">
             <!-- <v-card v-if="!showCard"> -->
             <v-card>
               <v-card-text>
               <v-radio-group v-model="gameRadios">
                 <div v-for="item in infoGame">
-                  <v-radio :label="'Game: ' + item.game_id" :value="item.game_id"></v-radio>
+                  <v-radio :label="item.game_name" :value="item.game_id"></v-radio>
                 </div>
                   </v-radio-group>
               </v-card-text>
               <div>{{gameRadios}}</div>
                 <v-card-actions>
-                    <v-btn class="info" value="send" v-on:click="getAnswerSheetphp(gameRadios)">送信</v-btn>
+                    <v-btn class="info" value="send" v-on:click="getAnswerSheetphp(gameRadios); showGameBtn=!showGameBtn; showCard=!showCard; handleButtonClick()">送信</v-btn>
                 </v-card-actions>
             </v-card>
             <!-- <div> {{email}} </div>
             <div> {{infoUser.event_id}} </div> -->
         </v-container>
         <!-- 終了後非表示にできない -->
-        <v-container v-if="currentQuestionNumber < questionsLength"> 
+        <v-container v-if="showCard && currentQuestionNumber < questionsLength"> 
           <v-card>
             <div>回答</div>
             <div>
@@ -97,8 +97,30 @@
             </v-card-actions>
           </v-card>
         </v-container>
-        <v-container v-if="currentQuestionNumber > questionsLength">
-       </v-container>
+
+       <v-container  v-if="showCard && currentQuestionNumber == questionsLength">
+            <v-card
+            class="mx-auto"
+              max-width="900"
+            >
+              <v-card-text class="pa-5">
+                    <!-- padding -->
+
+                  <div class=" ml-8 mb-2 text-h3 text--primary  text-center">
+
+                      完結
+                    
+                  </div>
+              </v-card-text>
+              <v-card-actions class="justify-center">
+                <v-btn
+                  v-on:click="showCard=returnMain(); currentQuestionNumber=0; infoQuestionId=[]">
+                  Return
+                </v-btn>
+              </v-card-actions>
+
+            </v-card>
+        </v-container>
 
       </v-main>
     </v-app>
@@ -114,6 +136,8 @@
           backgroundColor: "#b0e0e6",
           color: "#333"
         },
+        showEmail:true,
+        showGameBtn:false,
         showCard: false,
         gameRadios:'',
         answerRadios: '',
@@ -134,7 +158,7 @@
          team_name:'',
          team_school:'',
          user_id:'',
-         user_name:''
+         user_name:'',
         },
         infoQuestionId:[],
         email:'user1_1@asjas.org',
@@ -147,7 +171,13 @@
           this.currentQuestionNumber += 1
         },
         handleButtonClick: function(){
-          this.answerRadios ="";
+          this.answerRadios = "";
+          this.gameRadios = "";
+        },
+        returnMain(){
+          this.showGameBtn = true;
+          this.showCard = false;
+          
         },
         getEventPhp: function(){
           axios.get('./api/event.php')

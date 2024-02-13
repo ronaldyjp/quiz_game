@@ -6,7 +6,7 @@
         "user" => 'familyline',
         "password" => 'sole2628'
     ];
-    $default_local = [
+    $default = [
         "dsn" => "mysql:host=127.0.0.1;dbname=quiz_game;charset=utf8",
         "user" => 'root',
         "password" => ''
