@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `jstudy_t0010_apply` (
 
 -- テーブル quiz_game.jstudy_t0010_apply: 9 rows のデータをダンプしています
 /*!40000 ALTER TABLE `jstudy_t0010_apply` DISABLE KEYS */;
-INSERT INTO `jstudy_t0010_apply` (`id`, `a_num`, `a_type`, `ref_id`, `ref_apply_id`, `event_name`, `domain`, `a_name`, `a_kanji`, `a_sex`, `a_address`, `a_area`, `a_tel`, `a_whatsapp`, `a_email`, `a_pos`, `a_dep`, `a_cm`, `e_level`, `j_level`, `u_level`, `a_0`, `a_1`, `a_2`, `a_3`, `a_4`, `a_5`, `c_0`, `c_1`, `c_2`, `c_3`, `c_4`, `c_5`, `created`, `modified`, `a_school`, `school_area`, `p_0`, `p_1`, `p_2`, `p_3`, `p_4`, `p_5`, `u_0`, `u_1`, `u_2`, `u_3`, `u_4`, `u_5`, `e_0`, `e_1`, `e_2`, `e_3`, `e_4`, `e_5`, `sel_docs`, `data_json`, `memo`) VALUES
+REPLACE INTO `jstudy_t0010_apply` (`id`, `a_num`, `a_type`, `ref_id`, `ref_apply_id`, `event_name`, `domain`, `a_name`, `a_kanji`, `a_sex`, `a_address`, `a_area`, `a_tel`, `a_whatsapp`, `a_email`, `a_pos`, `a_dep`, `a_cm`, `e_level`, `j_level`, `u_level`, `a_0`, `a_1`, `a_2`, `a_3`, `a_4`, `a_5`, `c_0`, `c_1`, `c_2`, `c_3`, `c_4`, `c_5`, `created`, `modified`, `a_school`, `school_area`, `p_0`, `p_1`, `p_2`, `p_3`, `p_4`, `p_5`, `u_0`, `u_1`, `u_2`, `u_3`, `u_4`, `u_5`, `e_0`, `e_1`, `e_2`, `e_3`, `e_4`, `e_5`, `sel_docs`, `data_json`, `memo`) VALUES
 	(1, NULL, 'E', NULL, 1, NULL, NULL, 'user1_1', NULL, NULL, NULL, NULL, '0011', NULL, 'user1_1@asjas.org', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-01-19 11:01:58', NULL, 'school1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(2, NULL, 'E', NULL, 1, NULL, NULL, 'user1_2', NULL, NULL, NULL, NULL, '0012', NULL, 'user1_2@asjas.org', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-01-19 11:01:58', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(3, NULL, 'E', NULL, 1, NULL, NULL, 'user1_3', NULL, NULL, NULL, NULL, '0013', NULL, 'user1_3@asjas.org', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-01-19 11:01:59', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `q0001_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- テーブル quiz_game.q0001_user: ~8 rows (約) のデータをダンプしています
-INSERT INTO `q0001_user` (`id`, `q0002_id`, `name`, `email`, `phone`, `created_at`) VALUES
+REPLACE INTO `q0001_user` (`id`, `q0002_id`, `name`, `email`, `phone`, `created_at`) VALUES
 	(1, 1, 'user1_1', 'user1_1@asjas.org', '0011', '2024-01-19 10:20:07'),
 	(2, 1, 'user1_2', 'user1_2@asjas.org', '0012', '2024-01-19 11:01:58'),
 	(3, 1, 'user1_3', 'user1_3@asjas.org', '0013', '2024-01-19 11:01:59'),
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `q0002_team` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- テーブル quiz_game.q0002_team: ~3 rows (約) のデータをダンプしています
-INSERT INTO `q0002_team` (`id`, `q0012_id`, `leader_email`, `name`, `school`) VALUES
+REPLACE INTO `q0002_team` (`id`, `q0012_id`, `leader_email`, `name`, `school`) VALUES
 	(1, 1, 'user1_1@asjas.org', 'school1_1', 'school1'),
 	(2, 1, 'user1_4@asjas.org', 'school1_2', 'school1'),
 	(3, 1, 'user2_1@asjas.org', 'school2', 'school2');
@@ -139,20 +139,20 @@ CREATE TABLE IF NOT EXISTS `q0004_user_answer` (
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `q0001_id_q0012_id_q0021_id` (`q0001_id`,`q0012_id`,`q0021_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- テーブル quiz_game.q0004_user_answer: ~24 rows (約) のデータをダンプしています
-INSERT INTO `q0004_user_answer` (`id`, `q0001_id`, `q0012_id`, `q0021_id`, `answer`, `created_at`) VALUES
-	(1, 1, 1, 1, 1, '2024-01-30 04:00:00'),
-	(2, 1, 1, 2, 2, '2024-01-30 05:00:00'),
-	(3, 1, 1, 3, 3, '2024-01-30 06:00:00'),
-	(4, 1, 1, 4, 4, '2024-01-30 07:00:00'),
+REPLACE INTO `q0004_user_answer` (`id`, `q0001_id`, `q0012_id`, `q0021_id`, `answer`, `created_at`) VALUES
+	(1, 1, 1, 1, 1, '2024-01-30 04:00:10'),
+	(2, 1, 1, 2, 2, '2024-01-30 05:00:10'),
+	(3, 1, 1, 3, 3, '2024-01-30 06:00:20'),
+	(4, 1, 1, 4, 4, '2024-01-30 07:00:31'),
 	(5, 2, 1, 1, 1, '2024-01-30 04:00:00'),
 	(6, 2, 1, 2, 2, '2024-01-30 05:00:00'),
-	(7, 2, 1, 3, 3, '2024-01-30 06:00:00'),
+	(7, 2, 1, 3, 1, '2024-01-30 06:00:00'),
 	(8, 2, 1, 4, 4, '2024-01-30 07:00:00'),
 	(9, 4, 1, 1, 1, '2024-01-30 04:00:00'),
-	(10, 4, 1, 2, 2, '2024-01-30 05:00:00'),
+	(10, 4, 1, 2, 2, '2024-01-30 05:00:20'),
 	(11, 4, 1, 3, 1, '2024-01-30 06:00:00'),
 	(12, 4, 1, 4, 1, '2024-01-30 07:00:00'),
 	(13, 6, 1, 1, 1, '2024-01-30 04:00:00'),
@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `q0011_game` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- テーブル quiz_game.q0011_game: ~2 rows (約) のデータをダンプしています
-INSERT INTO `q0011_game` (`id`, `name`) VALUES
+REPLACE INTO `q0011_game` (`id`, `name`) VALUES
 	(1, 'Game1'),
 	(2, 'Game2');
 
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `q0012_event` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- テーブル quiz_game.q0012_event: ~1 rows (約) のデータをダンプしています
-INSERT INTO `q0012_event` (`id`, `name`, `event_date`, `city`) VALUES
+REPLACE INTO `q0012_event` (`id`, `name`, `event_date`, `city`) VALUES
 	(1, 'event1', '2024-02-12 00:00:00', 'hk');
 
 --  テーブル quiz_game.q0013_event_game_rel の構造をダンプしています
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `q0013_event_game_rel` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- テーブル quiz_game.q0013_event_game_rel: ~2 rows (約) のデータをダンプしています
-INSERT INTO `q0013_event_game_rel` (`id`, `name`, `start_time`, `end_time`, `q0011_id`, `q0012_id`) VALUES
+REPLACE INTO `q0013_event_game_rel` (`id`, `name`, `start_time`, `end_time`, `q0011_id`, `q0012_id`) VALUES
 	(1, '第一回合', '2024-01-30 12:00:00', '2024-01-30 13:00:00', 1, 1),
 	(2, '第二回合', '2024-01-30 13:00:00', '2024-01-30 14:00:00', 2, 1);
 
@@ -222,35 +222,34 @@ CREATE TABLE IF NOT EXISTS `q0021_question` (
   `answer` int(11) NOT NULL,
   `view_order` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- テーブル quiz_game.q0021_question: ~5 rows (約) のデータをダンプしています
-INSERT INTO `q0021_question` (`id`, `q0011_id`, `image`, `question`, `choices1`, `choices2`, `choices3`, `choices4`, `answer`, `view_order`) VALUES
+-- テーブル quiz_game.q0021_question: ~7 rows (約) のデータをダンプしています
+REPLACE INTO `q0021_question` (`id`, `q0011_id`, `image`, `question`, `choices1`, `choices2`, `choices3`, `choices4`, `answer`, `view_order`) VALUES
 	(1, 1, 'q1.jpg', 'q1_1', 'c1_1', 'c1_2', 'c1_3', 'c1_4', 1, 1),
 	(2, 1, NULL, 'q2_1', 'c2_1', 'c2_2', 'c2_3', 'c2_4', 2, 2),
 	(3, 1, 'q3.jpg', 'q3_1', '', '', '', '', 3, 3),
 	(4, 1, NULL, 'q4_1', 'c4_1', 'c4_2', 'c4_3', 'c4_4', 4, 4),
 	(5, 2, NULL, 'q5_1', 'c5_1', 'c5_2', 'c5_3', 'c5_4', 1, 1),
 	(6, 2, NULL, 'q6_1', 'c6_1', 'c6_2', 'c6_3', 'c6_4', 1, 1),
-	(7, 2, NULL, 'q7_1', 'c7_1', 'c7_2', 'c7_3', 'c7_4', 1, 1)
-	;
+	(7, 2, NULL, 'q7_1', 'c7_1', 'c7_2', 'c7_3', 'c7_4', 1, 1);
 
 --  テーブル quiz_game.q0022_question_show_record の構造をダンプしています
 CREATE TABLE IF NOT EXISTS `q0022_question_show_record` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `q0012_id` bigint(20) unsigned NOT NULL,
   `q0021_id` bigint(20) unsigned NOT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `q0012_id_q0021_id` (`q0012_id`,`q0021_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- テーブル quiz_game.q0022_question_show_record: ~4 rows (約) のデータをダンプしています
-INSERT INTO `q0022_question_show_record` (`id`, `q0012_id`, `q0021_id`, `created_at`) VALUES
-	(1, 1, 1, '2024-01-30 12:00:00'),
-	(2, 1, 2, '2024-01-30 13:00:00'),
-	(3, 1, 3, '2024-01-30 14:00:00'),
-	(4, 1, 4, '2024-01-30 15:00:00');
+REPLACE INTO `q0022_question_show_record` (`id`, `q0012_id`, `q0021_id`, `created_at`) VALUES
+	(1, 1, 1, '2024-01-30 04:00:00'),
+	(2, 1, 2, '2024-01-30 05:00:00'),
+	(3, 1, 3, '2024-01-30 06:00:00'),
+	(4, 1, 4, '2024-01-30 07:00:00');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

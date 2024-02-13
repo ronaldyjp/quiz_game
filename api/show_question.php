@@ -7,11 +7,11 @@
 
 EOF;
     $stmt = $dbh->prepare($sql);
-    $result = $stmt->execute([$_GET['event_id'], $_GET['question_id']]); 
-    if($result == 0){ //データベースに同じものがある場合
-        echo json_encode(['result'=>['status' => 'fail', 'message' => '失敗']]);
-    }else{
+    try {
+        $result = $stmt->execute([$_GET['event_id'], $_GET['question_id']]); 
         echo json_encode(['result'=>['status' => 'success', 'message' => '成功']]);
+    } catch (\Throwable $th) {
+        echo json_encode(['result'=>['status' => 'fail', 'message' => '失敗']]);
     }
 
 ?>
