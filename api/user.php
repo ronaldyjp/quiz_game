@@ -10,7 +10,7 @@
     a.id as user_id , a.a_name as user_name 
 from jstudy_t0010_apply a 
 inner join q0012_event e 
-     on DATE_FORMAT(event_date, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d') 
+     on e.active = 1
 left join
      (select a.id as team_id , t.name as team_name, t.school as team_school, t.q0012_id as event_id
      from jstudy_t0010_apply a

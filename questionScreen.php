@@ -10,7 +10,7 @@
           dark
           app
         >        
-        <v-toolbar-title style="color: #000000;">{{infoEvent.event_name}}</v-toolbar-title>
+        <v-toolbar-title style="color: #ffffff;">{{infoEvent.event_name}}</v-toolbar-title>
           <v-spacer></v-spacer>
           
 
@@ -19,18 +19,20 @@
       <v-main>
           <!-- <div>{{currentQuestionNumber}}</div> -->
         <!-- <v-btn @click="startInterval()"> count</v-btn> -->
-        <div v-if="!showGameBtn" class="mt-3 ml-8 mb-3"> ゲーム選択のボタン </div>
+        <div v-if="!showGameBtn" class="mt-3 ml-8 mb-3"> 
+          <div v-for="item in infoGame">
+              <v-btn 
+              color="orange-lighten-2"
+              variant="text"
+              class="mt-3 ml-8 mb-3"
+              value="item.game_id"
+              v-on:click="getQuestionPhp(item.game_id); displayGameName=item.game_name; showStart = !showStart; showGameBtn = !showGameBtn">
+              {{item.game_name}}
+              </v-btn>
+          </div>
+        </div>
           <!-- ゲーム選択のボタン getQuestionPhpを呼び出し-->
-        <li v-for="item in infoGame">
-            <v-btn v-if="!showGameBtn"
-            color="orange-lighten-2"
-            variant="text"
-            class="mt-3 ml-8 mb-3"
-             value="item.game_id"
-             v-on:click="getQuestionPhp(item.game_id); displayGameName=item.game_name; showStart = !showStart; showGameBtn = !showGameBtn">
-             {{item.game_name}}
-            </v-btn>
-        </li>
+ 
             <!--  ボタンをクリックしたら表示されるようにした -->
         <div>
             <v-btn 
@@ -42,10 +44,32 @@
               start 
             </v-btn>
         </div>
-        <div v-if="showCard" class="ml-8 mb-2 text-h3 text--primary  text-center">
+        <div v-if="showCard" class="ml-8 mb-2 text-h5 text--primary  text-center">
           {{displayGameName}}
         </div>
+          <v-container  v-if="showCard && currentQuestionNumber == questionsLength">
+            <v-card
+              class="mx-auto"
+              max-width="900"
+            >
+            <v-card-text class="pa-5">
+                  <!-- padding -->
 
+                <div class=" ml-8 mb-2 text-h3 text--primary  text-center">
+
+                    完結
+                   
+                </div>
+            </v-card-text>
+            <v-card-actions class="justify-center">
+              <v-btn
+                v-on:click="showCard=returnMain()">
+                Return
+              </v-btn>
+            </v-card-actions>
+
+            </v-card>
+          </v-container>
           <v-container  v-if="showCard && currentQuestionNumber <= questionsLength-1">
                 <v-card
                     class="mx-auto"
@@ -57,17 +81,20 @@
 
                 <div class=" ml-8 mb-2 text-h3 text--primary  text-center">
                     <div class=" text-right text-h3" style="color: #ff0000;"
-                    >{{Count.sec}} s
+                    >{{Count.sec}} 秒
                     </div>
-                    第 {{infoQuiz[currentQuestionNumber].question_id}} 問 / 
-                    第 {{questionsLength}} 問
+                    第 {{infoQuiz[currentQuestionNumber].question_id}} 題 / 
+                    共 {{questionsLength}} 題
                    
                 </div>
                
                 <div>
                   <!-- 入力を変数にしたい場合の方法 -->
-                <v-img
-                  height="250px"
+                <v-img 
+                      v-if="infoQuiz[currentQuestionNumber].question_image_ur"
+                      class="mx-auto"
+                      max-width="900"
+                      max-height="250px"
                       :src="'/quiz_game' + infoQuiz[currentQuestionNumber].question_image_ur"
                   ></v-img>
                 </div>
@@ -76,7 +103,7 @@
                   <h3 class="mb-4  text-h4 text--primary  text-center">{{infoQuiz[currentQuestionNumber].question_question}}</h3>
                 </div>
                 <div class="ml-2 mb-4 text-h5 text--primary">
-                  <div> 【次の4つから選べ】</div>
+                  <div> 【選擇】</div>
                   <ol >
                     <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices1}}</li>
                     <li class="ml-3 mb-4">{{infoQuiz[currentQuestionNumber].question_choices2}}</li>
@@ -135,8 +162,8 @@
         currentQuestionNumber: 0, // 現在の問題番号start from 0
         questionsLength: 0,
         Count:{
-          defaultSec: 9,
-          sec: 9,
+          defaultSec: 5,
+          sec: 5,
           timeFin: 0,
           intervalId: null,
         },
@@ -171,15 +198,22 @@
             }, 1000);
           }else{
             clearInterval(this.Count.intervalId);
+            alert("end of the game");
             //this.Count.intervalId=null;
           }
+        },
+        returnMain(){
+          this.showGameBtn = false;
+          this.showCard = false;
+          this.timeStop();
+          
         },
         timeStop(){
           clearInterval(this.Count.intervalId);
         },
         getEventPhp: function(){
           //alert('show ' + axios);
-          axios.get('/quiz_game/api/event.php')
+          axios.get('./api/event.php')
           .then(res =>{
            // var self = this
             var event = res.data.data;// ショートカット
@@ -215,7 +249,7 @@
         },
         getQuestionPhp: function(id){
           return new Promise((resolve) => { //これが終わるまで次へ行かないようにする
-          axios.get('/quiz_game/api/game.php',
+          axios.get('./api/game.php',
           {
             params:{//クエリパラメータをつける方法
               game_id: id,
@@ -256,7 +290,7 @@
 
         },
         getShowQuestionPhp: function(questionNum){
-          axios.get('/quiz_game/api/show_question.php',
+          axios.get('./api/show_question.php',
           {
             params:
               {     //クエリパラメータをつける方法   

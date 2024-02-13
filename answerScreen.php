@@ -150,7 +150,7 @@
           this.answerRadios ="";
         },
         getEventPhp: function(){
-          axios.get('/quiz_game/api/event.php')
+          axios.get('./api/event.php')
           .then(res =>{
            // var self = this
             var event = res.data.data;// ショートカット
@@ -181,7 +181,7 @@
           })
         },
         getUserPhp: function(){
-          axios.get('/quiz_game/api/user.php', 
+          axios.get('./api/user.php', 
           {
             params:
             {
@@ -216,7 +216,7 @@
           })
         },
         getAnswerSheetphp:function(id){
-          axios.get('/quiz_game/api/answer_sheet.php', 
+          axios.get('./api/answer_sheet.php', 
           {
             params:
             {
@@ -246,7 +246,7 @@
         },
 
         getAnswerphp:function(answer){
-          axios.get('/quiz_game/api/answer.php', 
+          axios.get('./api/answer.php', 
           {
             params:
             {

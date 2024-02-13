@@ -6,7 +6,7 @@
     //nameとpasswordをdbからとる。この場合ANDでかつとなる
     $sql =<<<EOF
 
-    SELECT * FROM q0012_event WHERE DATE_FORMAT(event_date, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d') 
+    SELECT * FROM q0012_event WHERE active = 1
 
 EOF;
 
@@ -20,7 +20,7 @@ EOF;
     }  
     $sql =<<<EOF
 
-    SELECT g.*, r.start_time, r.end_time FROM q0011_game g INNER JOIN q0013_event_game_rel r ON g.id = r.q0011_id WHERE r.q0012_id = :id 
+    SELECT g.id, r.name ,  r.start_time, r.end_time FROM q0011_game g INNER JOIN q0013_event_game_rel r ON g.id = r.q0011_id WHERE r.q0012_id = :id 
 
 EOF;
     $stmt = $dbh->prepare($sql);
