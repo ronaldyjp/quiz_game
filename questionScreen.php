@@ -209,7 +209,8 @@
           this.timeStop();
           
         },
-         clearInterval(this.Count.intervalId);
+        timeStop(){
+          clearInterval(this.Count.intervalId);
         },
         getEventPhp: function(){
           //alert('show ' + axios);

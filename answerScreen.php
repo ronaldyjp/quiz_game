@@ -62,18 +62,23 @@
               <v-card-text>
               <v-radio-group v-model="gameRadios">
                 <div v-for="item in infoGame">
-                  <v-radio :label="item.game_name" :value="item.game_id"></v-radio>
+                  <v-radio :label="item.game_name" :value="item"></v-radio>
                 </div>
                   </v-radio-group>
               </v-card-text>
               <div>{{gameRadios}}</div>
                 <v-card-actions>
-                    <v-btn class="info" value="send" v-on:click="getAnswerSheetphp(gameRadios); showGameBtn=!showGameBtn; showCard=!showCard; handleButtonClick()">送信</v-btn>
+                    <!-- <v-btn class="info" value="send" v-on:click="getAnswerSheetphp(gameRadios.game_id); 
+                    displayGameName=gameRadios.game_name; showGameBtn=!showGameBtn; showCard=!showCard; handleButtonClick()">送信</v-btn> -->
+                    <v-btn class="info" value="send" v-on:click="sendGameID(gameRadios)">送信</v-btn>
                 </v-card-actions>
             </v-card>
             <!-- <div> {{email}} </div>
             <div> {{infoUser.event_id}} </div> -->
         </v-container>
+        <div v-if="showCard" class="ml-8 mb-2 text-h5 text--primary  text-center">
+          {{displayGameName}}
+        </div>
         <!-- 終了後非表示にできない -->
         <v-container v-if="showCard && currentQuestionNumber < questionsLength"> 
           <v-card>
@@ -142,6 +147,7 @@
         gameRadios:'',
         answerRadios: '',
         
+        displayGameName: "",
         message: 'Answer Screen',
 
         infoEvent:{
@@ -178,6 +184,13 @@
           this.showGameBtn = true;
           this.showCard = false;
           
+        },
+        sendGameID: function(Ojt){
+          this.getAnswerSheetphp(Ojt.game_id);
+          this.displayGameName=Ojt.game_name;
+          this.showGameBtn=!this.showGameBtn;
+          this.showCard=!this.showCard;
+          this.handleButtonClick()
         },
         getEventPhp: function(){
           axios.get('./api/event.php')
