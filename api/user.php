@@ -6,7 +6,7 @@
 
     SELECT 
     e.id AS event_id, e.name as event_name,
-    NVL(t.team_id,0) as team_id , NVL(t.team_name,'') as team_name, NVL(t.team_school,'') as team_school,
+    IFNULL(t.team_id,0) as team_id , IFNULL(t.team_name,'') as team_name, IFNULL(t.team_school,'') as team_school,
     a.id as user_id , a.a_name as user_name 
 from jstudy_t0010_apply a 
 inner join q0012_event e 
@@ -15,7 +15,7 @@ left join
      (select a.id as team_id , t.name as team_name, t.school as team_school, t.q0012_id as event_id
      from jstudy_t0010_apply a
      inner join q0002_team t
-     on t.leader_email = a.a_email
+     on t.leader_id = a.id
      where a.id = a.ref_apply_id
     ) t
     on e.id = t.event_id AND t.team_id = a.ref_apply_id

@@ -1,5 +1,7 @@
 <?php
     include './common.php';
+    $url = explode('?',$_SERVER['REQUEST_URI']);
+    $email = $url[1];
 ?>
   <div id="app">
     <v-app :style="appStyles"  >
@@ -9,39 +11,19 @@
         dark
         app
       >        
-      <v-toolbar-title style="color: #000000;">Word Quiz Answer Page</v-toolbar-title>
-        <v-spacer></v-spacer>
-        
-      <v-menu
-        left
-        bottom
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
-            v-bind="attrs"
-            v-on="on"
-          >
-            <v-icon>mdi-account-circle</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item>
-            <v-list-item-title> user ID: {{infoUser.user_id}}</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title> user name: {{infoUser.user_name}} </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      <v-toolbar-title style="color: #ffffff;" v-if="infoUser">{{infoUser.event_name}}</v-toolbar-title>
+        <v-spacer>
+        </v-spacer>
+        <v-btn icon>
+          <v-icon>mdi-account-circle</v-icon>
+        </v-btn>
+        {{infoUser.user_name}}
       </v-app-bar>
 
 
       <v-main>
+        <!--
         <v-container v-if="showEmail">
-            <!-- <v-card v-if="!showCard"> -->
             <v-card>
               <v-card-text>
                 <v-form>
@@ -53,52 +35,49 @@
                     <v-btn class="info" value="send" v-on:click="getUserPhp(); showEmail=!showEmail; showGameBtn=!showGameBtn">送信</v-btn>
                 </v-card-actions>
             </v-card>
-            <!-- <div> {{email}} </div>
-            <div> {{infoUser.event_id}} </div> -->
         </v-container>
-        <v-container  v-if="showGameBtn">
+        -->
+        <v-container v-if="showGameBtn">
             <!-- <v-card v-if="!showCard"> -->
             <v-card>
               <v-card-text>
-              <v-radio-group v-model="gameRadios">
+              
+              <v-radio-group v-model="game">
                 <div v-for="item in infoGame">
-                  <v-radio :label="item.game_name" :value="item"></v-radio>
+                  <v-radio :label="item.name" :value="item"></v-radio>
                 </div>
                   </v-radio-group>
               </v-card-text>
-              <div>{{gameRadios}}</div>
                 <v-card-actions>
                     <!-- <v-btn class="info" value="send" v-on:click="getAnswerSheetphp(gameRadios.game_id); 
                     displayGameName=gameRadios.game_name; showGameBtn=!showGameBtn; showCard=!showCard; handleButtonClick()">送信</v-btn> -->
-                    <v-btn class="info" value="send" v-on:click="sendGameID(gameRadios)">送信</v-btn>
+                    <v-btn class="info" value="send" v-on:click="getAnswerSheetphp">START</v-btn>
                 </v-card-actions>
             </v-card>
-            <!-- <div> {{email}} </div>
-            <div> {{infoUser.event_id}} </div> -->
         </v-container>
-        <div v-if="showCard" class="ml-8 mb-2 text-h5 text--primary  text-center">
-          {{displayGameName}}
+        <div v-if="showCard && game" class="ml-8 mb-2 text-h5 text--primary  text-center">
+          {{game.game_name}}
         </div>
         <!-- 終了後非表示にできない -->
         <v-container v-if="showCard && currentQuestionNumber < questionsLength" class="text-center"> 
           <v-card>
             <div>回答</div>
             <div>
-              第 {{currentQuestionNumber + 1}} 問 /  第 {{questionsLength}} 問
+              第 {{currentQuestionNumber + 1}} 題 /  共 {{questionsLength}} 題
             </div>
             <v-card-text>
             <div class="ml-2 mb-4 text-h5 text--primary">
-            <v-radio-group v-model="answerRadios">
+            <v-radio-group v-model="answerValue">
               <v-radio label="1" value="1"></v-radio>
               <v-radio label="2" value="2"></v-radio>
               <v-radio label="3" value="3"></v-radio>
               <v-radio label="4" value="4"></v-radio>
             </v-radio-group>
             </div>
-            <div>選択：{{answerRadios}}</div>
+            <div>選択：{{answerValue}}</div>
             </v-card-text>
             <v-card-actions>
-              <v-btn class="info" value="send" v-on:click="getAnswerphp(answerRadios);questionNumber();handleButtonClick()">回答</v-btn>
+              <v-btn class="info" value="send" v-on:click="sendAnswerphp()">回答</v-btn>
             </v-card-actions>
           </v-card>
         </v-container>
@@ -137,67 +116,54 @@
       el: '#app',
       vuetify: new Vuetify(),
      data: {
-      appStyles:{
+        appStyles:{
           backgroundColor: "#b0e0e6",
           color: "#333"
         },
-        showEmail:true,
         showGameBtn:false,
         showCard: false,
-        gameRadios:'',
-        answerRadios: '',
-        
+        game: null,
+        answerValue: '',
         displayGameName: "",
         message: 'Answer Screen',
-
-        infoEvent:{
-          event_id: '',
-          event_name: '',
-          event_date: '',
-          event_city: '',
-        },
-        infoGame:[],
-        infoUser:{
-         event_id:'',
-         event_name:'',
-         team_id:'',
-         team_name:'',
-         team_school:'',
-         user_id:'',
-         user_name:'',
-        },
+        infoEvent:null,
+        infoGame:null,
+        infoUser:null,
         infoQuestionId:[],
-        email:'user1_1@asjas.org',
+        email: '<?= $email ?>',
         currentQuestionNumber: 0,
         questionsLength:0,
 
       },
+      created() {
+        this.getUserPhp();
+      },
       methods:{
-        questionNumber: function(){
-          this.currentQuestionNumber += 1
-        },
-        handleButtonClick: function(){
-          this.answerRadios = "";
-          this.gameRadios = "";
+        nextQuestion: function(){
+          this.currentQuestionNumber += 1;
+          this.answerValue = "";
         },
         returnMain(){
           this.showGameBtn = true;
           this.showCard = false;
           
         },
+        /*
         sendGameID: function(Ojt){
           this.getAnswerSheetphp(Ojt.game_id);
           this.displayGameName=Ojt.game_name;
-          this.showGameBtn=!this.showGameBtn;
-          this.showCard=!this.showCard;
+          this.showGameBtn= false;
+          this.showCard= true;
           this.handleButtonClick()
         },
+        */
+        /*
         getEventPhp: function(){
           axios.get('./api/event.php')
           .then(res =>{
            // var self = this
-            var event = res.data.data;// ショートカット
-            var game = res.data.data.games
+           var event = res.data.data;// ショートカット
+           var game = res.data.data.games
             // alert('move');
             this.infoEvent.event_id = event.id
             this.infoEvent.event_name =event.name
@@ -214,7 +180,7 @@
                 });
               }
             }
-           
+
             console.log(this.infoEvent);
             console.log(this.infoGame);
            // alert(this.infoEvent.event_name);
@@ -223,17 +189,21 @@
             console.log(error);
           })
         },
+        */
         getUserPhp: function(){
-          axios.get('./api/user.php', 
+          // alert("call getUserPhp()");
+          axios.get('./api/user.php?', 
           {
             params:
             {
-              email:this.email
+              email: this.email
             }
           }
           )
           .then(res =>{
-            var user = res.data.data
+            this.infoUser = res.data.data;
+            this.infoGame = this.infoUser.games;
+            /*
             var game = res.data.data.games
             this.infoUser.event_id = user.event_id
             this.infoUser.event_name = user.event_name
@@ -252,22 +222,25 @@
                 });
               }
             }
+            */
+            this.showGameBtn = true;
             console.log(res)
           })
           .catch(function (error) {
             console.log(error);
           })
         },
-        getAnswerSheetphp:function(id){
+        getAnswerSheetphp:function(){
           axios.get('./api/answer_sheet.php', 
           {
             params:
             {
-              game_id:id
+              game_id: this.game.id
             }
           })
           .then(res =>{
-            var question = res.data.data
+            this.infoQuestionId = res.data.data
+            /*
             for(var key in question){
               if(question[key].id && !this.infoQuestionId.includes(question[key].id)){
                 this.infoQuestionId.push({
@@ -275,7 +248,11 @@
                 });
               }
             }
-            this.questionsLength = Object.keys(this.infoQuestionId).length; 
+            */
+            this.questionsLength = this.infoQuestionId.length; 
+            // this.displayGameName=Ojt.game_name;
+            this.showGameBtn= false;
+            this.showCard= true;
             console.log(this.questionsLength)
 
             // console.log(res.data.data)
@@ -287,18 +264,17 @@
             console.log(error);
           })
         },
-
-        getAnswerphp:function(answer){
+        sendAnswerphp(){
+          var values = {
+              user_id: this.infoUser.user_id,
+              event_id: this.infoUser.event_id,
+              question_id: this.infoQuestionId[this.currentQuestionNumber].id,
+              answer: this.answerValue
+          }
+          console.log(values);
           axios.get('./api/answer.php', 
           {
-            params:
-            {
-              user_id:this.infoUser.user_id,
-              event_id:this.infoUser.event_id,
-              question_id:this.infoQuestionId[this.currentQuestionNumber].question_id,
-              answer:answer
-              // question_id: this.
-            }
+            params: values
           })
           .then(res =>{
             console.log(res)          
@@ -306,12 +282,9 @@
           .catch(function (error) {
             console.log(error);
           })
+          this.nextQuestion();
         }
 
-      },
-      created(){ 
-        // コンポーネントが作成された直後に myMethod を呼び出す
-        //this.getEventPhp();
       }
     })
   </script>

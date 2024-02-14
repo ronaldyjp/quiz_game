@@ -117,17 +117,17 @@ REPLACE INTO `q0001_user` (`id`, `q0002_id`, `name`, `email`, `phone`, `created_
 CREATE TABLE IF NOT EXISTS `q0002_team` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `q0012_id` bigint(20) unsigned DEFAULT NULL,
-  `leader_email` varchar(256) DEFAULT NULL,
+  `leader_id` int(11) DEFAULT NULL,
   `name` varchar(50) NOT NULL,
   `school` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- テーブル quiz_game.q0002_team: ~2 rows (約) のデータをダンプしています
-REPLACE INTO `q0002_team` (`id`, `q0012_id`, `leader_email`, `name`, `school`) VALUES
-	(1, 1, 'user1_1@asjas.org', 'school1_1', 'school1'),
-	(2, 1, 'user1_4@asjas.org', 'school1_2', 'school1'),
-	(3, 1, 'user2_1@asjas.org', 'school2', 'school2');
+-- テーブル quiz_game.q0002_team: ~3 rows (約) のデータをダンプしています
+REPLACE INTO `q0002_team` (`id`, `q0012_id`, `leader_id`, `name`, `school`) VALUES
+	(1, 1, 1, 'school1_1', 'school1'),
+	(2, 1, 4, 'school1_2', 'school1'),
+	(3, 1, 6, 'school2', 'school2');
 
 --  テーブル quiz_game.q0004_user_answer の構造をダンプしています
 CREATE TABLE IF NOT EXISTS `q0004_user_answer` (
@@ -243,14 +243,17 @@ CREATE TABLE IF NOT EXISTS `q0022_question_show_record` (
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `q0012_id_q0021_id` (`q0012_id`,`q0021_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- テーブル quiz_game.q0022_question_show_record: ~4 rows (約) のデータをダンプしています
+-- テーブル quiz_game.q0022_question_show_record: ~7 rows (約) のデータをダンプしています
 REPLACE INTO `q0022_question_show_record` (`id`, `q0012_id`, `q0021_id`, `created_at`) VALUES
 	(1, 1, 1, '2024-01-30 04:00:00'),
 	(2, 1, 2, '2024-01-30 05:00:00'),
 	(3, 1, 3, '2024-01-30 06:00:00'),
-	(4, 1, 4, '2024-01-30 07:00:00');
+	(4, 1, 4, '2024-01-30 07:00:00'),
+	(20, 1, 5, '2024-02-13 06:03:56'),
+	(21, 1, 6, '2024-02-13 06:04:00'),
+	(22, 1, 7, '2024-02-13 06:04:04');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

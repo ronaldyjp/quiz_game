@@ -2,7 +2,7 @@
     include './com/common.php';
         $sql =<<<EOF
 
-        SELECT res.team_id, SUM(res.point) AS point, SUM(res.reply_min)/60 AS total_min, t.name, t.school FROM 
+        SELECT res.team_id, SUM(res.point) AS point, SUM(res.reply_min)/60 AS total_min, u.a_name AS name,  t.name as team_name, t.school FROM 
      (
         SELECT t.team_id, r.id AS rec_id, MIN(a.created_at) AS ans_time,
         CASE
@@ -18,13 +18,13 @@
         inner join q0022_question_show_record r
             ON r.q0021_id = a.q0021_id AND TIMESTAMPDIFF(SECOND, r.created_at, a.created_at) >= 0 AND TIMESTAMPDIFF(SECOND, r.created_at, a.created_at) < 30
         inner join
-          (select a.id as ref_id , t.id AS team_id, a.a_email as email, t.name as team_name, t.school as team_school, t.q0012_id as event_id
+          (select t.leader_id , t.id AS team_id, a.a_email as email, t.name as team_name, t.school as team_school, t.q0012_id as event_id
              from jstudy_t0010_apply a
              inner join q0002_team t
-             on t.leader_email = a.a_email
+             on t.leader_id = a.id
              where a.id = a.ref_apply_id
          ) t
-         on t.ref_id = u.ref_apply_id
+         on t.leader_id = u.ref_apply_id
          inner join q0012_event e
          ON e.active = 1 and a.q0012_id = e.id 
          where u.ref_apply_id >0 
@@ -32,6 +32,8 @@
     ) as res
          INNER JOIN q0002_team t 
          ON t.id = res.team_id
+         INNER JOIN jstudy_t0010_apply u
+         ON t.leader_id = u.id
          GROUP BY res.team_id 
          ORDER BY SUM(res.point) DESC, SUM(res.reply_min) ASC
 EOF;

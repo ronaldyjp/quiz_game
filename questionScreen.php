@@ -19,7 +19,7 @@
       <v-main>
           <!-- <div>{{currentQuestionNumber}}</div> -->
         <!-- <v-btn @click="startInterval()"> count</v-btn> -->
-        <div v-if="!showGameBtn" class="mt-3 ml-8 mb-3"> 
+        <div v-if="!showGameBtn" class="mt-3 ml-8 mb-3" > 
           <div v-for="item in infoGame">
               <v-btn 
               color="orange-lighten-2"
@@ -30,6 +30,50 @@
               {{item.game_name}}
               </v-btn>
           </div>
+          <div>
+            <v-btn
+            color="orange-lighten-2"
+              variant="text"
+              class="mt-3 ml-8 mb-3"
+              v-if="!haveReport"
+                v-on:click="getReportPhp()">
+                Result
+            </v-btn>
+          </div>
+          <v-container v-if="haveReport">
+          <v-card class="text-center">
+            <v-row>
+              <v-col>
+              <h1>TOP 5</h1>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <h3><font color="blue">團體組 </font></h3>
+                <div v-for="(item,index) in infoReportTeam">
+                    <h3>第{{index+1}}位 {{item.school}}({{item.name}})</h3>
+                    <div> 分數  {{item.point}} point , 時間: {{item.total_min | numFilter }} mins</div>
+                </div>
+              </v-col>
+              <v-col>
+                <h3><font color="blue">個人組 </font></h3>
+                <div v-for="(item,index) in infoReportPerson">
+                    <h3>第{{index+1}}位  {{item.name}}</h3>
+                    <div>分數: {{item.point}} point, 時間: {{item.total_min | numFilter}} mins</div>
+                </div>
+              </v-col>
+            </v-row>
+            <v-row>
+            <v-btn
+            color="orange-lighten-2"
+              variant="text"
+              class="mt-3 ml-8 mb-3"
+                v-on:click="clearReport()">
+                Close
+            </v-btn>
+            </v-row>
+          </v-card>
+        </v-container>
         </div>
           <!-- ゲーム選択のボタン getQuestionPhpを呼び出し-->
  
@@ -56,18 +100,13 @@
                   <!-- padding -->
 
                 <div class=" ml-8 mb-2 text-h3 text--primary  text-center">
-                    完結
+                    Fin
                 </div>
             </v-card-text>
             <v-card-actions class="justify-center">
               <v-btn
                 v-on:click="showCard=returnMain(); currentQuestionNumber=0; infoQuiz=[];showResult=!showResult">
                 Return
-              </v-btn>
-              <v-btn
-              v-if="!showResult"
-                v-on:click="getReportPhp();showResult=!showResult">
-                結果
               </v-btn>
             </v-card-actions>
 
@@ -133,28 +172,7 @@
             <!-- <v-btn v-on:click="getEventPhp()">ログイン</v-btn> -->
         </v-container>
        
-         <v-container v-if="showResult">
-          <v-card class="text-center">
-            <v-row>
-              <v-col>
-                <h1>team ranking </h1>
-                <div v-for="(item,index) in infoReportTeam">
-                    <h3>第{{index+1}}位 {{item.school}}({{item.name}})</h3>
-                    <div>ポイント: {{item.point}} point</div>
-                    <div>トータルタイム: {{item.total_min}}s</div>
-                </div>
-              </v-col>
-              <v-col>
-                <h1>personal ranking </h1>
-                <div v-for="(item,index) in infoReportPerson">
-                    <h3>第{{index+1}}位  {{item.name}}</h3>
-                    <div>ポイント: {{item.point}} point</div>
-                    <div>トータルタイム: {{item.total_min}}s</div>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-container>
+
          <!-- <v-btn @click="getShowQuestionPhp"> show_question </v-btn> -->
          <!-- <v-btn class=" text-center" v-if="showCard" @click=" timeStop()"> stop </v-btn>
          <v-btn class="ml-8 mb-4"  v-if="showCard" @click="startInterval()"> restart </v-btn> -->
@@ -206,8 +224,19 @@
         },
       
       },
+      filters:{
+        numFilter(value){
+          let realVal = '';
+          if(!isNaN(value) && value !==""){
+            realVal = parseFloat(value).toFixed(1);
+          }
+          return realVal;
+        }
+      },
       computed: {
-        
+        haveReport(){
+          return this.infoReportTeam.length || this.infoReportPerson.length
+        }
       },
       methods:{
      
@@ -262,6 +291,10 @@
         },
         timeStop(){
           clearInterval(this.Count.intervalId);
+        },
+        clearReport(){
+          this.infoReportTeam = [];
+          this.infoReportPerson = [];
         },
         getEventPhp: function(){
           //alert('show ' + axios);
@@ -366,8 +399,9 @@
         getReportPhp:function(){
           axios.get('./api/report.php')
           .then(res =>{
-            var team = res.data.data.team
-            var person = res.data.data.person 
+            this.infoReportTeam = res.data.data.team
+            this.infoReportPerson = res.data.data.person 
+            /*
             for(var key in team){
               if(team[key].team_id && !this.infoReportTeam.includes(team[key].team_id)){
                 this.infoReportTeam.push({
@@ -389,7 +423,7 @@
                 })
               }
             }
-            
+            */
             console.log(res)
             console.log(this.infoReportTeam)
             console.log(this.infoReportPerson)
