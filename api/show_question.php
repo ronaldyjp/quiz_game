@@ -10,8 +10,12 @@ EOF;
     try {
         $result = $stmt->execute([$_GET['event_id'], $_GET['question_id']]); 
         echo json_encode(['result'=>['status' => 'success', 'message' => '成功']]);
-    } catch (\Throwable $th) {
+    } catch (PDOException $ex) {
         echo json_encode(['result'=>['status' => 'fail', 'message' => '失敗']]);
+
+    } catch (Exception $ex) {
+        echo json_encode(['result'=>['status' => 'fail', 'message' => '失敗']]);
+
     }
 
 ?>

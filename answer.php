@@ -77,7 +77,7 @@
             <div>選択：{{answerValue}}</div>
             </v-card-text>
             <v-card-actions>
-              <v-btn class="info" value="send" v-on:click="sendAnswerphp()">回答</v-btn>
+              <v-btn class="info" value="send" v-on:click="sendAnswerphp()" :disabled='!(answerValue)'>回答</v-btn>
             </v-card-actions>
           </v-card>
         </v-container>
