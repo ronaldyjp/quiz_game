@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `q0004_user_answer` (
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `q0001_id_q0012_id_q0021_id` (`q0001_id`,`q0012_id`,`q0021_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- テーブル quiz_game.q0004_user_answer: ~24 rows (約) のデータをダンプしています
 REPLACE INTO `q0004_user_answer` (`id`, `q0001_id`, `q0012_id`, `q0021_id`, `answer`, `created_at`) VALUES
@@ -166,7 +166,8 @@ REPLACE INTO `q0004_user_answer` (`id`, `q0001_id`, `q0012_id`, `q0021_id`, `ans
 	(21, 9, 1, 1, 1, '2024-01-30 04:00:00'),
 	(22, 9, 1, 2, 2, '2024-01-30 05:00:00'),
 	(23, 9, 1, 3, 1, '2024-01-30 06:00:00'),
-	(24, 9, 1, 4, 1, '2024-01-30 07:00:00');
+	(24, 9, 1, 4, 1, '2024-01-30 07:00:00'),
+	(30, 1, 3, 1, 1, '2024-02-14 15:32:22');
 
 --  テーブル quiz_game.q0011_game の構造をダンプしています
 CREATE TABLE IF NOT EXISTS `q0011_game` (
@@ -190,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `q0012_event` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- テーブル quiz_game.q0012_event: ~1 rows (約) のデータをダンプしています
+-- テーブル quiz_game.q0012_event: ~0 rows (約) のデータをダンプしています
 REPLACE INTO `q0012_event` (`id`, `name`, `event_date`, `city`, `active`) VALUES
 	(1, 'event1', '2024-02-12 00:00:00', 'hk', b'1');
 
