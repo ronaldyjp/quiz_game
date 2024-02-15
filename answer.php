@@ -39,45 +39,46 @@
         -->
         <v-container v-if="showGameBtn">
             <!-- <v-card v-if="!showCard"> -->
-            <v-card>
+            <v-card  class="text-center">
               <v-card-text>
-              
               <v-radio-group v-model="game">
-                <div v-for="item in infoGame">
-                  <v-radio :label="item.name" :value="item"></v-radio>
+                <div class="mt-6 mx-auto" v-for="item in infoGame">
+                  <v-radio  :label="item.name" :value="item"></v-radio>
                 </div>
                   </v-radio-group>
               </v-card-text>
                 <v-card-actions>
                     <!-- <v-btn class="info" value="send" v-on:click="getAnswerSheetphp(gameRadios.game_id); 
                     displayGameName=gameRadios.game_name; showGameBtn=!showGameBtn; showCard=!showCard; handleButtonClick()">送信</v-btn> -->
-                    <v-btn class="info" value="send" v-on:click="getAnswerSheetphp">START</v-btn>
+                    <v-btn large color="primary" class="mx-auto" value="send" v-on:click="getAnswerSheetphp">START</v-btn>
                 </v-card-actions>
             </v-card>
         </v-container>
-        <div v-if="showCard && game" class="ml-8 mb-2 text-h5 text--primary  text-center">
-          {{game.game_name}}
-        </div>
+        
         <!-- 終了後非表示にできない -->
-        <v-container v-if="showCard && currentQuestionNumber < questionsLength" class="text-center"> 
-          <v-card>
-            <div>回答</div>
-            <div>
+        <v-container v-if="showCard && currentQuestionNumber < questionsLength"> 
+          <v-card class="text-center">
+            <div class="text-h5" > {{game.name}}</div>
+            <div class="text-h6 ">
               第 {{currentQuestionNumber + 1}} 題 /  共 {{questionsLength}} 題
             </div>
             <v-card-text>
-            <div class="ml-2 mb-4 text-h5 text--primary">
-            <v-radio-group v-model="answerValue">
-              <v-radio label="1" value="1"></v-radio>
-              <v-radio label="2" value="2"></v-radio>
-              <v-radio label="3" value="3"></v-radio>
-              <v-radio label="4" value="4"></v-radio>
+            <div class="text-h6 text-primary">
+            <v-radio-group class="md-5" v-model="answerValue">
+
+            
+              <v-radio class="mt-4 mx-auto" label="1" value="1"></v-radio>
+              <v-radio class="mt-4 mx-auto"  label="2"  value="2"></v-radio>
+              <v-radio class="mt-4 mx-auto"  label="3" value="3"></v-radio>
+              <v-radio class="mt-4  mx-auto" label="4" value="4"></v-radio>
             </v-radio-group>
             </div>
+
+
             <div>選択：{{answerValue}}</div>
             </v-card-text>
             <v-card-actions>
-              <v-btn class="info" value="send" v-on:click="sendAnswerphp()" :disabled='!(answerValue)'>回答</v-btn>
+              <v-btn  color="primary" class="info mx-auto text-h7" large value="send" v-on:click="sendAnswerphp()" :disabled='!(answerValue)'>回答</v-btn>
             </v-card-actions>
           </v-card>
         </v-container>
@@ -90,7 +91,7 @@
               <v-card-text class="pa-5">
                     <!-- padding -->
 
-                  <div class=" ml-8 mb-2 text-h3 text--primary  text-center">
+                  <div class="  text-h3 text--primary text-center">
 
                       完結
                     
@@ -98,6 +99,7 @@
               </v-card-text>
               <v-card-actions class="justify-center">
                 <v-btn
+                color="primary"
                   v-on:click="showCard=returnMain(); currentQuestionNumber=0; infoQuestionId=[]">
                   Return
                 </v-btn>

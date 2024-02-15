@@ -81,9 +81,9 @@
         <div>
             <v-btn 
               color="orange-lighten-2"
-              variant="text"
+              
               v-if="showStart" 
-              class="mt-3 ml-8 mb-3"
+              class="mt-3 ml-8 mb-3" 
               @click="showCard =!showCard;showStart = !showStart; startInterval()">
               start 
             </v-btn>
@@ -159,8 +159,8 @@
 
                 </div>
                 <div class="text-center pa-3">
-                <v-btn style="color:#191970 ;" v-if="showCard" @click=" timeStop()"> stop </v-btn>
-                <v-btn style="color:#191970 ;" class="ml-5"  v-if="showCard" @click="startInterval()"> start </v-btn>
+                <v-btn style="color:#191970 ;" v-if="showCard" @click=" timeStop(); showBtn=!showBtn"  :disabled="showBtn"> stop </v-btn>
+                <v-btn style="color:#191970 ;" class="ml-5"  v-if="showCard" @click="startInterval(); showBtn=!showBtn " :disabled="!showBtn"> start </v-btn>
                 </div>
               </v-card-text>
                 <!-- <v-btn  color="blue" @click="nextQuestion()"> Next </v-btn> -->
@@ -193,6 +193,7 @@
           backgroundColor: "#b0e0e6",
           color: "#333"
         },
+        showBtn: false,
        
         message: 'Answer Screen',
         showGameBtn: false,
