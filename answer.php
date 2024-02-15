@@ -192,7 +192,7 @@
         */
         getUserPhp: function(){
           // alert("call getUserPhp()");
-          axios.get('./api/user.php?', 
+          axios.get('./api/user.php', 
           {
             params:
             {
