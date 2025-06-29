@@ -40,8 +40,20 @@ EOF;
         $stmt = $dbh->prepare($sql);
         $stmt->execute(); 
         $team = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                
- 
+        $sql =<<<EOF
+        SELECT a.q0001_id,u.email,count(a.id) as cnt
+  FROM q0004_user_answer a
+	inner join q0012_event e
+   		ON e.id = a.q0012_id  
+ 	inner join q0021_question q
+                on q.id = a.q0021_id AND q.answer = a.answer 
+	inner join q0001_user u
+		ON u.id = a.q0001_id
+        where a.q0012_id = 7
+	GROUP BY a.q0001_id
+EOF;
+        
+
         $sql =<<<EOF
     
         SELECT SUM(res.point) AS point, SUM(res.reply_min)/60 AS total_min, u.a_name AS name FROM 

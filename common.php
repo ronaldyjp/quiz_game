@@ -9,10 +9,10 @@
 </head>
 <body>
 <?php
-    $debug = true;
-    $CONFIG = ['show_second'=>30];
+    $debug = false;
+    $CONFIG = ['show_second'=>20];
     if($debug){
-      $CONFIG = ['show_second'=>5];
+      $CONFIG = ['show_second'=>3];
     }
     $common_js = <<<EOF
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>

@@ -142,7 +142,7 @@
                 </div>
                 <!-- v-bind または :　は中身を変数にすることができる。' 'の中身は文字化する -->
                 <div >
-                  <h3 class="mb-4  text-h4 text--primary  text-center">{{infoQuiz[currentQuestionNumber].question_question}}</h3>
+                  <h3 class="mb-4  text-h4 text--primary">{{infoQuiz[currentQuestionNumber].question_question}}</h3>
                 </div>
                 <div v-if="!showAnswer" class="ml-2 mb-4 text-h4 text--primary">
                   <div> <font color="blue">【選擇】</font></div>
@@ -239,6 +239,17 @@
           return this.infoReportTeam.length || this.infoReportPerson.length
         }
       },
+      watch: {
+        'Count.sec': {
+            handler() {
+                if(this.Count.sec === this.Count.defaultSec) {
+                  if(this.currentQuestionNumber <= this.questionsLength-1) {
+                    this.getShowQuestionPhp(this.currentQuestionNumber);
+                  }
+                }
+            }
+        },
+      },
       methods:{
      
         // nextQuestion(){
@@ -249,6 +260,9 @@
         startInterval(){
           //alert('move');
           if(this.currentQuestionNumber <= this.questionsLength-1){
+            if(this.Count.sec === this.Count.defaultSec) {
+              this.getShowQuestionPhp(this.currentQuestionNumber);
+            }
             this.Count.intervalId = setInterval(() =>{
               this.Count.sec --;
               if(this.Count.sec == this.Count.timeAnswer){
@@ -262,7 +276,7 @@
                 //this.nextQuestion();
                 this.showAnswer = false;
 
-                this.getShowQuestionPhp(this.currentQuestionNumber);//こっちが先
+                // this.getShowQuestionPhp(this.currentQuestionNumber);//こっちが先
                 this.currentQuestionNumber += 1
 
                 //this.showAnswer=false;

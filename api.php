@@ -17,7 +17,6 @@ $files = [
     "/api/answer_sheet.php?game_id=1",
     "/api/answer.php?user_id=1&event_id=1&question_id=1&answer=1",
     "/api/report.php",
-    "/api/account.php?email=user1_1@asjas.org&phone=0011"
 ];
 
 foreach ($files as $value) {

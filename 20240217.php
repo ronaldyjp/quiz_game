@@ -2,6 +2,7 @@
     include './common.php';
     $url = explode('?',$_SERVER['REQUEST_URI']);
     $email = $url[1];
+    $event_id = 1;
 ?>
   <div id="app">
     <v-app :style="appStyles"  >
@@ -11,23 +12,14 @@
         dark
         app
       >        
-      <v-toolbar-title style="color: #ffffff;" v-if="infoUser">{{infoEvent.name}}</v-toolbar-title>
+      <v-toolbar-title style="color: #ffffff;" v-if="infoUser">{{infoUser.event_name}}</v-toolbar-title>
         <v-spacer>
         </v-spacer>
-        
-        <v-icon>mdi-account-multiple</v-icon>
-        &nbsp;
-        <div v-if="infoPartner">{{infoPartner.name}}</div>
-        <div v-if="!infoPartner">
-          <font color="yellow">沒有組員 </font>
-          <v-btn density="default" v-on:click="addPartner" >追加</v-btn>
-
-        </div>
-        &nbsp;&nbsp;
-        <v-icon>mdi-account-circle</v-icon>
+        {{infoUser.team_name}}
+        <v-btn icon>
+          <v-icon>mdi-account-circle</v-icon>
         </v-btn>
-        &nbsp;
-        {{infoUser.name}}
+        {{infoUser.user_name}}
       </v-app-bar>
 
 
@@ -53,7 +45,7 @@
               <v-card-text>
               <v-radio-group v-model="game">
                 <div class="mt-6 mx-auto" v-for="item in infoGame">
-                  <v-radio  :label="item.name" :value="item"></v-radio>
+                  <v-radio  :label="item.name + ' ' + item.start_time" :value="item"></v-radio>
                 </div>
                   </v-radio-group>
               </v-card-text>
@@ -138,12 +130,9 @@
         answerValue: '',
         displayGameName: "",
         message: 'Answer Screen',
-        
         infoEvent:null,
         infoGame:null,
         infoUser:null,
-        infoTeam:null,
-        infoPartner:null,
         infoQuestionId:[],
         email: '<?= $email ?>',
         currentQuestionNumber: 0,
@@ -211,16 +200,14 @@
           {
             params:
             {
-              email: this.email
+              email: this.email,
+              event_id: <?= $event_id?>
             }
           }
           )
           .then(res =>{
-            this.infoUser = res.data.data.user;
-            this.infoGame = res.data.data.games;
-            this.infoEvent = res.data.data.event;
-            this.infoTeam = res.data.data.team;
-            this.infoPartner = res.data.data.partner;
+            this.infoUser = res.data.data;
+            this.infoGame = this.infoUser.games;
             /*
             var game = res.data.data.games
             this.infoUser.event_id = user.event_id
@@ -247,26 +234,6 @@
           .catch(function (error) {
             console.log(error);
           })
-        },
-        addPartner:function(){
-          var addEmail = prompt("請輸入組員 電話地址或電話號碼", "");
-          if (addEmail != null) {
-              axios.get('./api/add_partner.php', 
-            {
-              params:
-              {
-                team_id: this.infoTeam.id,
-                other_email: addEmail
-              }
-            })
-            .then(res =>{
-              window.location.reload();
-            })
-            .catch(function (error) {
-              console.log(error);
-            })
-
-          }
         },
         getAnswerSheetphp:function(){
           axios.get('./api/answer_sheet.php', 
@@ -304,8 +271,8 @@
         },
         sendAnswerphp(){
           var values = {
-              user_id: this.infoUser.id,
-              event_id: this.infoEvent.id,
+              user_id: this.infoUser.user_id,
+              event_id: this.infoUser.event_id,
               question_id: this.infoQuestionId[this.currentQuestionNumber].id,
               answer: this.answerValue
           }
